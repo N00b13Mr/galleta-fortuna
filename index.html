@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galleta de la Fortuna</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+        }
+
+        h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 10px rgba(255,255,255,0.2); }
+            to { text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 20px rgba(255,255,255,0.4); }
+        }
+
+        .cookie-container {
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        .fortune-cookie {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(45deg, #d4a574, #f4d6a7);
+            border-radius: 50% 0 50% 0;
+            transform: rotate(45deg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 10px 30px rgba(0,0,0,0.3),
+                inset -5px -5px 10px rgba(0,0,0,0.1),
+                inset 5px 5px 10px rgba(255,255,255,0.3);
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: rotate(45deg) translateY(0px); }
+            50% { transform: rotate(45deg) translateY(-10px); }
+        }
+
+        .fortune-cookie:hover {
+            transform: rotate(45deg) scale(1.1);
+            box-shadow: 
+                0 15px 40px rgba(0,0,0,0.4),
+                inset -5px -5px 10px rgba(0,0,0,0.1),
+                inset 5px 5px 10px rgba(255,255,255,0.3),
+                0 0 30px rgba(255,215,0,0.5);
+        }
+
+        .fortune-cookie::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: #8b4513;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.3;
+        }
+
+        .crack-animation {
+            animation: crack 0.5s ease-out !important;
+        }
+
+        @keyframes crack {
+            0% { transform: rotate(45deg) scale(1); }
+            25% { transform: rotate(45deg) scale(1.1) rotate(5deg); }
+            50% { transform: rotate(45deg) scale(1.05) rotate(-3deg); }
+            75% { transform: rotate(45deg) scale(1.08) rotate(2deg); }
+            100% { transform: rotate(45deg) scale(1); }
+        }
+
+        .fortune-message {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 400px;
+            opacity: 0;
+            transform: translateY(30px) scale(0.8);
+            transition: all 0.5s ease;
+            border: 2px solid rgba(255,215,0,0.3);
+        }
+
+        .fortune-message.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .fortune-text {
+            font-size: 1.2rem;
+            color: #333;
+            font-weight: 500;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .fortune-category {
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        .instruction {
+            color: rgba(255,255,255,0.8);
+            font-size: 1.1rem;
+            margin-top: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .particles {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 1px;
+            height: 1px;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffd700;
+            border-radius: 50%;
+            animation: explode 1s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(2);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    
+    <div class="container">
+        <h1>🥠 Galleta de la Fortuna Mágica 🥠</h1>
+        
+        <div class="cookie-container">
+            <div class="fortune-cookie" id="fortuneCookie">
+                <div class="particles" id="particles"></div>
+            </div>
+        </div>
+        
+        <div class="fortune-message" id="fortuneMessage">
+            <div class="fortune-text" id="fortuneText"></div>
+            <div class="fortune-category" id="fortuneCategory"></div>
+        </div>
+        
+        <p class="instruction">Haz clic en la galleta para descubrir tu fortuna</p>
+    </div>
+
+    <script>
+        const fortunes = [
+            { text: "Tu creatividad florecerá como nunca antes. Nuevas oportunidades artísticas se acercan.", category: "Creatividad" },
+            { text: "Un encuentro inesperado cambiará tu perspectiva de vida de manera positiva.", category: "Encuentros" },
+            { text: "La paciencia que has mostrado pronto será recompensada generosamente.", category: "Recompensas" },
+            { text: "Tu intuición te guiará hacia una decisión que transformará tu futuro.", category: "Intuición" },
+            { text: "Un viaje próximo te traerá experiencias que enriquecerán tu alma.", category: "Viajes" },
+            { text: "La generosidad que muestres hoy regresará a ti multiplicada por tres.", category: "Generosidad" },
+            { text: "Una habilidad oculta tuya pronto será descubierta y valorada por otros.", category: "Talentos" },
+            { text: "El amor llegará a tu vida cuando menos lo esperes, de la forma más hermosa.", category: "Amor" },
+            { text: "Tu perseverancia ante los desafíos actuales dará frutos extraordinarios.", category: "Perseverancia" },
+            { text: "Una vieja amistad se renovará trayendo alegría y nuevas aventuras.", category: "Amistad" },
+            { text: "Los obstáculos de hoy son los escalones del éxito de mañana.", category: "Superación" },
+            { text: "Tu sonrisa tiene el poder de cambiar el día de alguien. Úsala sabiamente.", category: "Influencia" },
+            { text: "Un secreto del universo se revelará a ti en el momento perfecto.", category: "Revelación" },
+            { text: "La respuesta que buscas está más cerca de lo que imaginas.", category: "Respuestas" },
+            { text: "Tu corazón conoce el camino. Confía en él y síguelo sin miedo.", category: "Confianza" },
+            { text: "Las estrellas se alinean para traerte una sorpresa maravillosa esta semana.", category: "Sorpresas" },
+            { text: "Tu energía positiva está creando ondas de cambio en tu entorno.", category: "Energía" },
+            { text: "Un proyecto que parecía imposible encontrará su camino hacia la realización.", category: "Proyectos" },
+            { text: "La sabiduría que necesitas llegará a través de una conversación casual.", category: "Sabiduría" },
+            { text: "Tu capacidad de adaptación te llevará a lugares increíbles.", category: "Adaptabilidad" }
+        ];
+
+        let currentFortuneIndex = -1;
+        let usedFortunes = [];
+
+        function createStars() {
+            const starsContainer = document.querySelector('.stars');
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = star.style.height = Math.random() * 3 + 1 + 'px';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            particlesContainer.innerHTML = '';
+            
+            for (let i = 0; i < 12; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                const angle = (i * 30) * Math.PI / 180;
+                const distance = 50 + Math.random() * 100;
+                const x = Math.cos(angle) * distance;
+                const y = Math.sin(angle) * distance;
+                
+                particle.style.setProperty('--x', x + 'px');
+                particle.style.setProperty('--y', y + 'px');
+                particle.style.transform = `translate(${x}px, ${y}px)`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        function getRandomFortune() {
+            if (usedFortunes.length === fortunes.length) {
+                usedFortunes = [];
+            }
+            
+            let availableFortunes = fortunes.filter((_, index) => !usedFortunes.includes(index));
+            let randomIndex = Math.floor(Math.random() * availableFortunes.length);
+            let selectedFortune = availableFortunes[randomIndex];
+            let originalIndex = fortunes.indexOf(selectedFortune);
+            
+            usedFortunes.push(originalIndex);
+            return selectedFortune;
+        }
+
+        function showFortune() {
+            const cookie = document.getElementById('fortuneCookie');
+            const messageDiv = document.getElementById('fortuneMessage');
+            const textDiv = document.getElementById('fortuneText');
+            const categoryDiv = document.getElementById('fortuneCategory');
+            
+            // Animación de agrietamiento
+            cookie.classList.add('crack-animation');
+            
+            // Crear partículas
+            createParticles();
+            
+            // Obtener nueva fortuna
+            const fortune = getRandomFortune();
+            
+            setTimeout(() => {
+                textDiv.textContent = fortune.text;
+                categoryDiv.textContent = `Categoría: ${fortune.category}`;
+                messageDiv.classList.add('show');
+                cookie.classList.remove('crack-animation');
+            }, 300);
+        }
+
+        function hideFortune() {
+            const messageDiv = document.getElementById('fortuneMessage');
+            messageDiv.classList.remove('show');
+        }
+
+        // Event listeners
+        document.getElementById('fortuneCookie').addEventListener('click', function() {
+            const messageDiv = document.getElementById('fortuneMessage');
+            
+            if (messageDiv.classList.contains('show')) {
+                hideFortune();
+                setTimeout(showFortune, 500);
+            } else {
+                showFortune();
+            }
+        });
+
+        // Inicializar
+        createStars();
+        
+        // Mostrar primera fortuna después de un momento
+        setTimeout(() => {
+            showFortune();
+        }, 1000);
+    </script>
+</body>
+</html>
